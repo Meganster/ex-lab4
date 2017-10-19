@@ -2,6 +2,25 @@
 # вызывает её, печатает в консоль имя функции, печатает результат и возвращает значение
 # Если функция вернула список (list), то значения должны выводиться в столбик
 # Если функция вернула словарь (dict), то ключи и значения должны выводить в столбик через знак равно
+
+def print_result(func):
+    result = None
+
+    def wrapper(*args, **kwargs):
+        print(func.__name__)
+        result = func(*args, **kwargs)
+        if isinstance(result, list):
+            for x in result:
+                print(x)
+        elif isinstance(result, dict):
+            for key in result:
+                print(key, " = ", result[key])
+        else:
+            print(result)
+        return result
+    return wrapper
+
+
 # Пример из ex_4.py:
 # @print_result
 # def test_1():
