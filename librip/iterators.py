@@ -19,7 +19,7 @@ class Unique(object):
         self._lst = list(items)
 
         if ignore_case & isinstance(self._lst[0], str):
-            self._lst.sort(key = lambda st: st.lower())
+            self._lst.sort(key = lambda char: char.lower())
         else:
             self._lst.sort()
 
@@ -36,7 +36,6 @@ class Unique(object):
                 if(x != self._new_lst[current_index]):
                     self._new_lst.append(x)
                     current_index += 1
-        self._index = -1
 
     def __next__(self):
         if self._index >= len(self._new_lst) - 1:
