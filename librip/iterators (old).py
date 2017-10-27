@@ -3,6 +3,10 @@ class Unique(object):
     # будем хранить в этой переменной
     # все полученные объекты items
     _lst = []
+    # будем хранить уникальные объекты
+    # в этой переменной
+    _new_lst = []
+    _index = -1
 
     def __init__(self, items, ignore_case):
         # Нужно реализовать конструктор
@@ -13,21 +17,31 @@ class Unique(object):
         # По-умолчанию ignore_case = False
         assert len(items) > 0
         self._lst = list(items)
-        self.ignore_case = ignore_case
-        self.returned = list()
 
+        if ignore_case & isinstance(self._lst[0], str):
+            self._lst.sort(key = lambda char: char.lower())
+        else:
+            self._lst.sort()
+
+        self._new_lst = []
+        current_index = 0
+        self._new_lst.append(self._lst[0])
+
+        for x in self._lst:
+            if(ignore_case & isinstance(self._lst[0], str)):
+                if(x.lower() != self._new_lst[current_index].lower()):
+                    self._new_lst.append(x)
+                    current_index += 1
+            else:
+                if(x != self._new_lst[current_index]):
+                    self._new_lst.append(x)
+                    current_index += 1
 
     def __next__(self):
-        for x in self._lst:
-            if (self.ignore_case & isinstance(x, str)):
-                if x.lower() not in self.returned:
-                    self.returned.append(x.lower())
-                    return x
-            else:
-                if x not in self.returned:
-                    self.returned.append(x)
-                    return x
-        raise StopIteration()
+        if self._index >= len(self._new_lst) - 1:
+            raise StopIteration
+        self._index += 1
+        return self._new_lst[self._index];
 
     def __iter__(self):
         return self
